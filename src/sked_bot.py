@@ -14,8 +14,8 @@ class MyClient(discord.Client):
             return
 
 
-        if message.content.startswith('!hello'):
-            await message.channel.send('Hello {0.author.mention}'.format(message))
+        if message.content.startswith('!sked'):
+            await message.channel.send('Yes {0.author.mention}?'.format(message))
 
 
 client = MyClient()
