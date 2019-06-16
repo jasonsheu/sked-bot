@@ -1,11 +1,13 @@
 import discord
-import time
-from datetime import datetime, timedelta
+
+from datetime import datetime
 
 import asyncio
 
 from discord.ext import commands
+from discord.ext.commands import context
 bot = commands.Bot(command_prefix='!sked ')
+client = discord.Client()
 
 class Reminder:
     def __init__(self, message, time):
@@ -60,6 +62,7 @@ class PriorityQueue(object):
 
 
 pq = PriorityQueue()
+announcement_id = 0
 
 @bot.event
 async def on_ready():
@@ -82,6 +85,7 @@ async def test(ctx, message, time):
 async def test(ctx):
     print(pq.pop())
 
+
 async def check_time():
     await bot.wait_until_ready()
 
@@ -89,18 +93,16 @@ async def check_time():
         current_time = datetime.now()
         if pq.isEmpty() == False:
             check = pq.peek().time
-            if check <= current_time:
 
-                print("MATCH!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            if check <= current_time:
+                channel = bot.get_channel(announcement_id)
+                await channel.send("@everyone hi")
                 pq.pop()
-                print(pq)
         await asyncio.sleep(1)
 
-
-@bot.command(name='lol')
-async def ping(ctx):
-    await ctx.send('@everyone lol')
-
+@bot.command(name="setid")
+async def setid(ctx, id):
+    announcement_id = id
 
 @bot.command()
 async def info(ctx):
